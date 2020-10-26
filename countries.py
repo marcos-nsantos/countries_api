@@ -8,7 +8,7 @@ URL_NAME = "https://restcountries.eu/rest/v2/name"
 
 def web_request(url):
     try:
-        answer = requests.get(URL_ALL)
+        answer = requests.get(url)
         if answer.status_code == 200:
             return answer.text
     except:
@@ -22,23 +22,25 @@ def parsing(answer_text):
         print("There was an error making your request in:")
 
 
-def count_countries(list_countries):
-    return len(list_countries)
+def count_countries(countries_list):
+    return len(countries_list)
 
 
-def list_countries(list_countries):
-    for country in list_countries:
+def list_countries(countries):
+    for country in countries:
         print(country['name'])
 
 
 def show_population(country_name):
-    country_list = web_request(f"{URL_NAME}/ {country_name}")
-    if country_list:
-        pass
+    answer = web_request(f"{URL_NAME}/{country_name}")
+    if answer:
+        list_of_countries = parsing(answer)
+        if list_of_countries:
+            for country in list_of_countries:
+                print(f"{country['name']}: {country['population']}")
+        else:
+            print("Country was not found")
+
 
 if __name__ == '__main__':
-    answer_text = web_request(URL_ALL)
-    if answer_text:
-        list_of_countries = parsing(answer_text)
-        if list_of_countries:
-            list_countries(list_of_countries)
+    show_population('brazil')
