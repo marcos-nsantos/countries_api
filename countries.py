@@ -42,5 +42,15 @@ def show_population(country_name):
             print("Country was not found")
 
 
-if __name__ == '__main__':
-    show_population('brazil')
+def show_currency(country_name):
+    answer = web_request(f"{URL_NAME}/{country_name}")
+    if answer:
+        list_of_countries = parsing(answer)
+        if list_of_countries:
+            for country in list_of_countries:
+                print(f"{country['name']} currencies:")
+                currency = country['currencies']
+                for currencies in currency:
+                    print(f"{currencies['name']} - {currencies['code']}")
+        else:
+            print("Country was not found")
